@@ -16,7 +16,7 @@ class TextStylesConsts {
     fontSize: 16.0,
     fontWeight: FontWeight.w400,
     color: ColorsConsts.mainGreyColor,
-    height: 1.2, // This is equivalent to setting line-height
+    height: 1.2,
   );
 
   static const TextStyle lvl16BlackStyle = TextStyle(
@@ -24,7 +24,7 @@ class TextStylesConsts {
     fontSize: 16.0,
     fontWeight: FontWeight.w400,
     color: ColorsConsts.lv1BlackColor,
-    height: 1.2, // This is equivalent to setting line-height
+    height: 1.2,
   );
 
   static const TextStyle lvl16WhiteStyle = TextStyle(
@@ -32,7 +32,7 @@ class TextStylesConsts {
     fontSize: 16.0,
     fontWeight: FontWeight.w400,
     color: Colors.white,
-    height: 1.2, // This is equivalent to setting line-height
+    height: 1.2,
   );
 
   static const TextStyle lvl16RedStyle = TextStyle(
@@ -40,7 +40,7 @@ class TextStylesConsts {
     fontSize: 16.0,
     fontWeight: FontWeight.w400,
     color: ColorsConsts.lv1RedColor,
-    height: 1.2, // This is equivalent to setting line-height
+    height: 1.2,
   );
 
   static const TextStyle lvl16BlueStyle = TextStyle(
@@ -48,14 +48,24 @@ class TextStylesConsts {
     fontSize: 16.0,
     fontWeight: FontWeight.w400,
     color: ColorsConsts.lv1BlueColor,
-    height: 1.2, // This is equivalent to setting line-height
+    height: 1.2,
   );
+
   static const TextStyle lvl16ButtonStyle = TextStyle(
-    fontFamily: 'Gotham Pro',
+    fontFamily: 'Gotham Pro Bold',
     fontSize: 16.0,
     fontWeight: FontWeight.bold,
     letterSpacing: 0.0,
     height: 15.0 / 16.0,
     color: Colors.white,
+  );
+
+  static const TextStyle headerAppBarStyle = TextStyle(
+    fontFamily: 'Gotham Pro Bold',
+    fontSize: 18.0,
+    fontWeight: FontWeight.w700,
+    letterSpacing: 0.0,
+    height: 15.0 / 16.0,
+    color: ColorsConsts.lv1BlackColor,
   );
 }

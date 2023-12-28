@@ -5,4 +5,6 @@ class AssetsConsts {
   static const String textFieldNotObscure =
       "assets/icons/not_obscured_text.svg";
   static const String homePageImage = "assets/images/home_page.png";
+  static const String backButtonIcon = "assets/icons/back_button.svg";
+  static const String warningIcon = "assets/icons/warning.svg";
 }

@@ -3,4 +3,5 @@ class RoutesConsts {
   static const String registration = '/regestration';
   static const String authentication = '/login';
   static const String mainPage = '/';
+  static const String registrationPassword = '/regestration/password';
 }

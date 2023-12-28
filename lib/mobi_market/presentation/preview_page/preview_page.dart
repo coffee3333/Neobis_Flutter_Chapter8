@@ -23,12 +23,13 @@ class _PreviewPageState extends State<PreviewPage> {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double verticalPadding = screenHeight * 0.2;
+    // double screenHeight = MediaQuery.of(context).size.height;
+    // double verticalPadding = screenHeight * 0.2;
 
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.only(top: verticalPadding),
+        // padding: EdgeInsets.only(top: verticalPadding),
+        padding: EdgeInsets.only(top: 100),
         child: Align(
           alignment: Alignment.topCenter,
           child: Image.asset(

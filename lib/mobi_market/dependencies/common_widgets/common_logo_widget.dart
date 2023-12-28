@@ -9,7 +9,7 @@ class CommonLogoWidget extends StatelessWidget {
     return Center(
       child: Image.asset(
         AssetsConsts.previewLogo,
-        width: 130,
+        width: 120,
       ),
     );
   }

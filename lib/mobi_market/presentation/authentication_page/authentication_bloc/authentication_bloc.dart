@@ -12,14 +12,14 @@ class AuthenticationBloc
   AuthenticationBloc() : super(AuthenticationBlocInitial()) {
     on<AuthenticationEvent>(_authenticateUser);
   }
+  final authenticationUseCase = getIt.get<AuthenticationUseCase>();
 
   void _authenticateUser(
       AuthenticationEvent event, Emitter<AuthenticationBlocState> emit) async {
     final authenticationModel =
         AuthenticationModel(username: event.userName, password: event.password);
     try {
-      final answer =
-          await getIt.get<AuthenticationUseCase>().call(authenticationModel);
+      await authenticationUseCase.call(authenticationModel);
       emit(AuthenticationSuccessState());
     } catch (e) {
       emit(AuthenticationErrorState(error: true, errorText: "asdasd"));

@@ -3,9 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:neobis_flutter_chapter8/mobi_market/core/consts/routes_consts.dart';
 import 'package:neobis_flutter_chapter8/mobi_market/core/consts/text_styles_consts.dart';
 import 'package:neobis_flutter_chapter8/mobi_market/dependencies/common_widgets/common_button_widget.dart';
+import 'package:neobis_flutter_chapter8/mobi_market/dependencies/common_widgets/common_dialog_widget.dart';
 import 'package:neobis_flutter_chapter8/mobi_market/dependencies/common_widgets/common_logo_widget.dart';
 import 'package:neobis_flutter_chapter8/mobi_market/dependencies/common_widgets/common_text_filed_widget.dart';
-import 'package:neobis_flutter_chapter8/mobi_market/presentation/authentication_page/authentication_bloc/authentication_bloc_bloc.dart';
+import 'package:neobis_flutter_chapter8/mobi_market/presentation/authentication_page/authentication_bloc/authentication_bloc.dart';
 
 class AuthenticationView extends StatefulWidget {
   const AuthenticationView({super.key});
@@ -143,25 +144,18 @@ class _AuthenticationViewState extends State<AuthenticationView> {
   }
 
   void _buildErrorMessage() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Container(
-          width: double.infinity,
-          height: 60,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16), color: Colors.red),
-          child: const Center(
-            child: Text(
-              "Неверный логин или пароль",
-              style: TextStylesConsts.lvl16WhiteStyle,
-            ),
-          ),
-        ),
-        duration: Duration(seconds: 2),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        // behavior: SnackBarBehavior.floating,
-      ),
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return const CustomDialogWidget(message: "Неверный логин или пароль");
+      },
+    );
+    Future.delayed(
+      const Duration(seconds: 1),
+      () {
+        Navigator.of(context).pop();
+      },
     );
   }
 
