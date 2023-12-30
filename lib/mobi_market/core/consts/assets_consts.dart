@@ -7,4 +7,6 @@ class AssetsConsts {
   static const String homePageImage = "assets/images/home_page.png";
   static const String backButtonIcon = "assets/icons/back_button.svg";
   static const String warningIcon = "assets/icons/warning.svg";
+  static const String lockIcon = "assets/icons/lock_logo.svg";
+  static const String lockImg = "assets/images/lock_logo.png";
 }

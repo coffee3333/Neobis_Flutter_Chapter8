@@ -10,4 +10,4 @@ class MailAndUsernameCheckEvent extends RegistrationBlocEvent {
   MailAndUsernameCheckEvent({required this.userName, required this.email});
 }
 
-class inEvent extends RegistrationBlocEvent {}
+class InEvent extends RegistrationBlocEvent {}

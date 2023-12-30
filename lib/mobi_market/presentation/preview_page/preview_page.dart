@@ -29,7 +29,7 @@ class _PreviewPageState extends State<PreviewPage> {
     return Scaffold(
       body: Padding(
         // padding: EdgeInsets.only(top: verticalPadding),
-        padding: EdgeInsets.only(top: 100),
+        padding: const EdgeInsets.only(top: 100),
         child: Align(
           alignment: Alignment.topCenter,
           child: Image.asset(

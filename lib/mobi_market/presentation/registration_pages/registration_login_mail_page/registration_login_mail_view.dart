@@ -6,7 +6,7 @@ import 'package:neobis_flutter_chapter8/mobi_market/dependencies/common_widgets/
 import 'package:neobis_flutter_chapter8/mobi_market/dependencies/common_widgets/common_dialog_widget.dart';
 import 'package:neobis_flutter_chapter8/mobi_market/dependencies/common_widgets/common_logo_widget.dart';
 import 'package:neobis_flutter_chapter8/mobi_market/dependencies/common_widgets/common_text_filed_widget.dart';
-import 'package:neobis_flutter_chapter8/mobi_market/presentation/registration_pages/registration_bloc/registration_bloc.dart';
+import 'package:neobis_flutter_chapter8/mobi_market/presentation/registration_pages/registration_login_mail_page/registration_bloc/registration_bloc.dart';
 
 class RegistrationView extends StatefulWidget {
   const RegistrationView({super.key});
@@ -27,7 +27,10 @@ class _RegistrationViewState extends State<RegistrationView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _getBody(),
-      appBar: const CustomAppBar(title: "Регистрация"),
+      appBar: const CustomAppBar(
+        title: "Регистрация",
+        action: false,
+      ),
     );
   }
 
@@ -89,8 +92,10 @@ class _RegistrationViewState extends State<RegistrationView> {
       listener: (context, state) {
         if (state is CheckUserNameAndMailSuccessState) {
           Navigator.pushNamed(context, RoutesConsts.registrationPassword,
-              arguments: context.read<RegistrationBloc>());
-          print("good");
+              arguments: {
+                'username': usernameController.text,
+                'email': mailController.text
+              });
         } else if (state is CheckUserNameAndMailErrorState) {
           _buildErrorMessage();
           setState(() {

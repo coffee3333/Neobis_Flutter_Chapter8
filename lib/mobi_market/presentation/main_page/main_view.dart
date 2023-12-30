@@ -10,6 +10,6 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
-    return const Expanded(child: Center(child: Text("Main page")));
+    return const Center(child: Text("Main page"));
   }
 }

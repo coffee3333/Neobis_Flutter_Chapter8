@@ -18,7 +18,7 @@ class CustomDialogWidget extends StatelessWidget {
           right: 0,
           child: Dialog(
             backgroundColor: Colors.transparent,
-            insetPadding: EdgeInsets.all(10),
+            insetPadding: const EdgeInsets.all(10),
             alignment: Alignment.center,
             child: Container(
               width: double.infinity,

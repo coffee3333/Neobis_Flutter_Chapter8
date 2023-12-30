@@ -21,4 +21,4 @@ class CheckUserNameAndMailErrorState extends RegistrationBlocState {
   CheckUserNameAndMailErrorState({required this.errorText});
 }
 
-class inEventState extends RegistrationBlocState {}
+class InEventState extends RegistrationBlocState {}

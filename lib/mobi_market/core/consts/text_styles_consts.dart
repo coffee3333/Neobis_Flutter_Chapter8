@@ -68,4 +68,31 @@ class TextStylesConsts {
     height: 15.0 / 16.0,
     color: ColorsConsts.lv1BlackColor,
   );
+
+  static const TextStyle lv2headerStyle = TextStyle(
+    fontFamily: 'Gotham Pro Medium',
+    fontSize: 20.0,
+    fontWeight: FontWeight.w400,
+    letterSpacing: 0.0,
+    height: 15.0 / 16.0,
+    color: ColorsConsts.lv1BlackColor,
+  );
+
+  static const TextStyle lv3PasswordBlackStyle = TextStyle(
+    fontFamily: 'Gotham Pro Bold',
+    fontSize: 24.0,
+    fontWeight: FontWeight.w700,
+    letterSpacing: 10.0,
+    height: 15.0 / 16.0,
+    color: ColorsConsts.lv1BlackColor,
+  );
+
+  static const TextStyle lv3PasswordRedStyle = TextStyle(
+    fontFamily: 'Gotham Pro Bold',
+    fontSize: 24.0,
+    fontWeight: FontWeight.w700,
+    letterSpacing: 10.0,
+    height: 15.0 / 16.0,
+    color: ColorsConsts.lv1RedColor,
+  );
 }

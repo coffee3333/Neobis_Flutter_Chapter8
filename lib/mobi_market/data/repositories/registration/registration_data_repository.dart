@@ -1,11 +1,10 @@
 import 'package:neobis_flutter_chapter8/mobi_market/data/data_sources/registration/models/api_registration_check_user_model.dart';
 import 'package:neobis_flutter_chapter8/mobi_market/data/data_sources/registration/models/api_registration_user_model.dart';
 import 'package:neobis_flutter_chapter8/mobi_market/data/data_sources/registration/service/service_api.dart';
-import 'package:neobis_flutter_chapter8/mobi_market/domain/models/user/user_model.dart';
 import 'package:neobis_flutter_chapter8/mobi_market/domain/repositories/registration/registration_repository.dart';
 
 class RegistrationDataRepository implements RegistrationRepository {
-  RegistrationServiceMobiMarketApi _service;
+  final RegistrationServiceMobiMarketApi _service;
   RegistrationDataRepository(this._service);
 
   @override

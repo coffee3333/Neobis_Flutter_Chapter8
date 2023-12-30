@@ -4,7 +4,17 @@ import 'package:neobis_flutter_chapter8/mobi_market/dependencies/common_widgets/
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  const CustomAppBar({super.key, required this.title});
+  final bool action;
+  final bool? obscure;
+  final Function()? obscureEvent;
+
+  const CustomAppBar({
+    super.key,
+    required this.title,
+    required this.action,
+    this.obscure,
+    this.obscureEvent,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +23,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: AppBar(
         title: Text(title),
         leading: const CustomBackButton(),
+        actions: _getActionSide(),
         elevation: 0,
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
@@ -21,6 +32,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
+  _getActionSide() {
+    if (action && obscure != null) {
+      return [
+        IconButton(
+          onPressed: () => obscureEvent!(),
+          icon: Icon(
+            obscure! ? Icons.visibility : Icons.visibility_off,
+          ),
+        ),
+      ];
+    }
+    return null;
+  }
+
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
