@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
@@ -20,7 +19,6 @@ class RegistrationPasswordBloc
     on<FieldsErrorEvent>(_onFieldsErrorEvent);
   }
 
-  late RegisterModel _registrationModel;
   final _registrationUseCase = getIt.get<RegistrationUseCase>();
 
   void _obscureField(

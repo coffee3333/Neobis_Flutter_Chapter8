@@ -11,7 +11,6 @@ class RegistrationBloc
     extends Bloc<RegistrationBlocEvent, RegistrationBlocState> {
   RegistrationBloc() : super(RegistrationBlocInitial()) {
     on<MailAndUsernameCheckEvent>(_checkUserNameAndMail);
-    on<InEvent>(_event1);
   }
   late RegisterCheckModel _registrationCheckModel;
   final _registrationUseCase = getIt.get<RegistrationUseCase>();
@@ -29,10 +28,5 @@ class RegistrationBloc
     //   print(e);
     //   emit(CheckUserNameAndMailErrorState(errorText: "error"));
     // }
-  }
-
-  void _event1(InEvent event, Emitter<RegistrationBlocState> emit) async {
-    print(_registrationCheckModel.email);
-    print(_registrationCheckModel.username);
   }
 }
