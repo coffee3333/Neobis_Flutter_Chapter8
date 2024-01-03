@@ -6,7 +6,7 @@ import 'package:neobis_flutter_chapter8/dependencies/common_widgets/common_butto
 import 'package:neobis_flutter_chapter8/dependencies/common_widgets/common_dialog_widget.dart';
 import 'package:neobis_flutter_chapter8/dependencies/common_widgets/common_logo_widget.dart';
 import 'package:neobis_flutter_chapter8/dependencies/common_widgets/common_text_filed_widget.dart';
-import 'package:neobis_flutter_chapter8/presentation/registration_pages/registration_login_mail_page/registration_bloc/registration_bloc.dart';
+import 'package:neobis_flutter_chapter8/presentation/registration_pages/registration_login_mail_page/cubit/registration_login_mail_cubit.dart';
 
 class RegistrationView extends StatefulWidget {
   const RegistrationView({super.key});
@@ -16,20 +16,38 @@ class RegistrationView extends StatefulWidget {
 }
 
 class _RegistrationViewState extends State<RegistrationView> {
-  bool errorUserName = false;
-  bool errorPassword = false;
-  bool butonActive = false;
-  bool showPass = true;
+  final buttonActive = ValueNotifier<bool>(false);
   final usernameController = TextEditingController();
   final mailController = TextEditingController();
 
   @override
+  void dispose() {
+    usernameController.dispose();
+    mailController.dispose();
+    buttonActive.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _getBody(),
-      appBar: const CustomAppBar(
-        title: "Регистрация",
-        action: false,
+    return BlocListener<RegistrationLoginMailCubit, RegistrationLoginMailState>(
+      listener: (context, state) {
+        if (state is CheckUserSuccessState) {
+          Navigator.pushNamed(context, RoutesConsts.registrationPassword,
+              arguments: {
+                'username': usernameController.text,
+                'email': mailController.text
+              });
+        } else if (state is CheckUserErrorState) {
+          _buildErrorMessage(state.errorText);
+        }
+      },
+      child: Scaffold(
+        body: _getBody(),
+        appBar: const CustomAppBar(
+          title: "Регистрация",
+          action: false,
+        ),
       ),
     );
   }
@@ -72,8 +90,10 @@ class _RegistrationViewState extends State<RegistrationView> {
       controller: usernameController,
       labelText: "Имя пользователя",
       suffixShow: false,
-      errorMessage: errorUserName,
-      onChanged: _onChangeUserName,
+      errorMessage: false,
+      onChanged: (value) {
+        _updateButton();
+      },
     );
   }
 
@@ -82,50 +102,47 @@ class _RegistrationViewState extends State<RegistrationView> {
       controller: mailController,
       labelText: "Почта",
       suffixShow: false,
-      errorMessage: errorPassword,
-      onChanged: _onChangePassword,
+      errorMessage: false,
+      onChanged: (value) {
+        _updateButton();
+      },
     );
   }
 
   Widget _getNextButton() {
-    return BlocListener<RegistrationBloc, RegistrationBlocState>(
-      listener: (context, state) {
-        if (state is CheckUserNameAndMailSuccessState) {
-          Navigator.pushNamed(context, RoutesConsts.registrationPassword,
-              arguments: {
-                'username': usernameController.text,
-                'email': mailController.text
-              });
-        } else if (state is CheckUserNameAndMailErrorState) {
-          _buildErrorMessage();
-          setState(() {
-            butonActive = false;
-            errorUserName = true;
-            errorPassword = true;
-          });
-        }
-      },
-      child: CustomButton(
-        active: butonActive,
-        label: "Войти",
-        onPress: () {
-          context.read<RegistrationBloc>().add(
-                MailAndUsernameCheckEvent(
-                  userName: usernameController.text,
+    return ValueListenableBuilder(
+      valueListenable: buttonActive,
+      builder: (context, activeButton, _) {
+        return CustomButton(
+          active: activeButton,
+          label: "Войти",
+          onPress: () {
+            context.read<RegistrationLoginMailCubit>().checkUser(
+                  username: usernameController.text,
                   email: mailController.text,
-                ),
-              );
-        },
-      ),
+                );
+          },
+        );
+      },
     );
   }
 
-  void _buildErrorMessage() {
+  void _updateButton() {
+    if (usernameController.text.isNotEmpty &&
+        mailController.text.isNotEmpty &&
+        mailController.text.contains("@")) {
+      buttonActive.value = true;
+      return;
+    }
+    buttonActive.value = false;
+  }
+
+  void _buildErrorMessage(String message) {
     showDialog(
       barrierDismissible: true,
       context: context,
       builder: (BuildContext context) {
-        return const CustomDialogWidget(message: "asd");
+        return CustomDialogWidget(errorMessage: true, message: message);
       },
     );
     Future.delayed(
@@ -134,31 +151,5 @@ class _RegistrationViewState extends State<RegistrationView> {
         Navigator.of(context).pop();
       },
     );
-  }
-
-  void _activateButton() {
-    setState(() {
-      butonActive = usernameController.text.isNotEmpty &&
-          mailController.text.isNotEmpty &&
-          mailController.text.contains("@");
-    });
-  }
-
-  void _onChangeUserName(String value) {
-    _activateButton();
-    if (errorUserName) {
-      setState(() {
-        errorUserName = false;
-      });
-    }
-  }
-
-  void _onChangePassword(value) {
-    _activateButton();
-    if (errorPassword) {
-      setState(() {
-        errorPassword = false;
-      });
-    }
   }
 }

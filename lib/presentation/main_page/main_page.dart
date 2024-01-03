@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:neobis_flutter_chapter8/presentation/main_page/main_bloc/main_bloc_bloc.dart';
+import 'package:neobis_flutter_chapter8/presentation/main_page/bloc/main_bloc.dart';
 import 'package:neobis_flutter_chapter8/presentation/main_page/main_view.dart';
 
 class MainPage extends StatelessWidget {

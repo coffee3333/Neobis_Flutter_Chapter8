@@ -15,18 +15,47 @@ class AuthenticationView extends StatefulWidget {
   State<AuthenticationView> createState() => _AuthenticationViewState();
 }
 
+class ValuesNotifiedModel {
+  final obscureText = ValueNotifier<bool>(false);
+  final buttonActive = ValueNotifier<bool>(false);
+  final errorState = ValueNotifier<bool>(false);
+
+  void dispose() {
+    obscureText.dispose();
+    buttonActive.dispose();
+    errorState.dispose();
+  }
+}
+
 class _AuthenticationViewState extends State<AuthenticationView> {
-  bool errorUserName = false;
-  bool errorPassword = false;
-  bool butonActive = false;
-  bool showPass = true;
+  final _valueNotifier = ValuesNotifiedModel();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
   @override
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    _valueNotifier.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _getBody(),
+    return BlocListener<AuthenticationBloc, AuthenticationBlocState>(
+      listener: (context, state) {
+        if (state is AuthenticationSuccessState) {
+          Navigator.pushReplacementNamed(
+            context,
+            RoutesConsts.mainPage,
+          );
+        } else if (state is AuthenticationErrorState) {
+          _buildErrorMessage();
+        }
+      },
+      child: Scaffold(
+        body: _getBody(),
+      ),
     );
   }
 
@@ -44,11 +73,7 @@ class _AuthenticationViewState extends State<AuthenticationView> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.1,
               ),
-              _getUserNameField(),
-              const SizedBox(
-                height: 32,
-              ),
-              _getPasswordField(),
+              _getAuthenticationForm(),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.06,
               ),
@@ -67,61 +92,74 @@ class _AuthenticationViewState extends State<AuthenticationView> {
     );
   }
 
-  Widget _getUserNameField() {
+  Widget _getAuthenticationForm() {
+    return ValueListenableBuilder(
+      valueListenable: _valueNotifier.errorState,
+      builder: (context, errorState, _) {
+        return Column(
+          children: [
+            _getUserNameField(errorState),
+            const SizedBox(
+              height: 32,
+            ),
+            _getPasswordField(errorState),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _getUserNameField(bool errorState) {
     return CustomTextField(
       controller: usernameController,
       labelText: "Имя пользователя",
       suffixShow: false,
-      errorMessage: errorUserName,
-      onChanged: _onChangeUserName,
+      errorMessage: errorState,
+      onChanged: (value) {
+        _updateButtonEvent();
+      },
     );
   }
 
-  Widget _getPasswordField() {
-    return CustomTextField(
-      controller: passwordController,
-      labelText: "Пароль",
-      suffixShow: true,
-      obscure: showPass,
-      errorMessage: errorPassword,
-      onChanged: _onChangePassword,
-      obscureEvent: () {
-        setState(() {
-          showPass = !showPass;
-        });
+  Widget _getPasswordField(bool errorState) {
+    return ValueListenableBuilder(
+      valueListenable: _valueNotifier.obscureText,
+      builder: (context, obscure, _) {
+        return CustomTextField(
+          controller: passwordController,
+          labelText: "Пароль",
+          suffixShow: true,
+          obscure: obscure,
+          errorMessage: errorState,
+          onChanged: (value) {
+            _updateButtonEvent();
+          },
+          obscureEvent: () {
+            _valueNotifier.obscureText.value =
+                !_valueNotifier.obscureText.value;
+          },
+        );
       },
     );
   }
 
   Widget _getLogInButton() {
-    return BlocListener<AuthenticationBloc, AuthenticationBlocState>(
-      listener: (context, state) {
-        if (state is AuthenticationSuccessState) {
-          Navigator.pushReplacementNamed(
-            context,
-            RoutesConsts.mainPage,
-          );
-        } else if (state is AuthenticationErrorState) {
-          _buildErrorMessage();
-          setState(() {
-            butonActive = false;
-            errorUserName = true;
-            errorPassword = true;
-          });
-        }
+    return ValueListenableBuilder(
+      valueListenable: _valueNotifier.buttonActive,
+      builder: (context, buttonActive, child) {
+        return CustomButton(
+          active: buttonActive,
+          label: "Войти",
+          onPress: () {
+            context.read<AuthenticationBloc>().add(
+                  AuthenticationEvent(
+                    userName: usernameController.text,
+                    password: passwordController.text,
+                  ),
+                );
+          },
+        );
       },
-      child: CustomButton(
-        active: butonActive,
-        label: "Войти",
-        onPress: () {
-          context.read<AuthenticationBloc>().add(
-                AuthenticationEvent(
-                  userName: usernameController.text,
-                  password: passwordController.text,
-                ),
-              );
-        },
-      ),
     );
   }
 
@@ -130,7 +168,6 @@ class _AuthenticationViewState extends State<AuthenticationView> {
       onTap: () {
         usernameController.clear();
         passwordController.clear();
-        _activateButton();
         Navigator.pushNamed(
           context,
           RoutesConsts.registration,
@@ -148,39 +185,30 @@ class _AuthenticationViewState extends State<AuthenticationView> {
       barrierDismissible: true,
       context: context,
       builder: (BuildContext context) {
-        return const CustomDialogWidget(message: "Неверный логин или пароль");
+        return const CustomDialogWidget(
+          errorMessage: true,
+          message: "Неверный логин или пароль",
+        );
       },
     );
     Future.delayed(
       const Duration(seconds: 1),
       () {
         Navigator.of(context).pop();
+        _valueNotifier.errorState.value = true;
+        _valueNotifier.buttonActive.value = false;
       },
     );
   }
 
-  void _activateButton() {
-    setState(() {
-      butonActive = usernameController.text.isNotEmpty &&
-          passwordController.text.isNotEmpty;
-    });
-  }
-
-  void _onChangeUserName(String value) {
-    _activateButton();
-    if (errorUserName) {
-      setState(() {
-        errorUserName = false;
-      });
-    }
-  }
-
-  void _onChangePassword(value) {
-    _activateButton();
-    if (errorPassword) {
-      setState(() {
-        errorPassword = false;
-      });
+  void _updateButtonEvent() {
+    if (usernameController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty) {
+      _valueNotifier.buttonActive.value = true;
+      _valueNotifier.errorState.value = false;
+    } else {
+      _valueNotifier.buttonActive.value = false;
+      _valueNotifier.errorState.value = false;
     }
   }
 }

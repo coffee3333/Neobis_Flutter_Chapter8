@@ -8,7 +8,7 @@ import 'package:neobis_flutter_chapter8/domain/use_cases/authentication/authenti
 import 'package:neobis_flutter_chapter8/domain/use_cases/registration/registration_use_case.dart';
 
 final getIt = GetIt.instance;
-const String _base_url = "http://134.209.246.246:8080/api";
+const String _base_url = "http://161.35.210.154:8080/";
 
 void setupDi() {
   getIt.registerSingleton<Dio>(Dio(BaseOptions(baseUrl: _base_url)));

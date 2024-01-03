@@ -5,8 +5,10 @@ import 'package:neobis_flutter_chapter8/core/consts/colors_consts.dart';
 import 'package:neobis_flutter_chapter8/core/consts/text_styles_consts.dart';
 
 class CustomDialogWidget extends StatelessWidget {
+  final bool errorMessage;
   final String message;
-  const CustomDialogWidget({super.key, required this.message});
+  const CustomDialogWidget(
+      {super.key, required this.errorMessage, required this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,9 @@ class CustomDialogWidget extends StatelessWidget {
               height: 60,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
-                  color: ColorsConsts.lv1RedColor),
+                  color: errorMessage
+                      ? ColorsConsts.lv1RedColor
+                      : ColorsConsts.lv1GreenColor),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

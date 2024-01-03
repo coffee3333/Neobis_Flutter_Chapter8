@@ -6,4 +6,5 @@ class ColorsConsts {
   static const Color lv1BlackColor = Color(0xff494949);
   static const Color lv1RedColor = Color(0xffF34545);
   static const Color lv1BlueColor = Color(0xff5458EA);
+  static const Color lv1GreenColor = Color(0xff8FC53B);
 }

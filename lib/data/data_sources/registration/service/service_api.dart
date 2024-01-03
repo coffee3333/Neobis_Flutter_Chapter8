@@ -11,10 +11,11 @@ class RegistrationServiceMobiMarketApi implements RegistrationDataSource {
   Future registationUser({required ApiRegistrationUserModel user}) async {
     try {
       await dio.post(
-        '/registration',
+        '/registration/register',
         data: user.toJson(),
       );
     } catch (error) {
+      print(error);
       rethrow;
     }
   }
@@ -22,10 +23,11 @@ class RegistrationServiceMobiMarketApi implements RegistrationDataSource {
   @override
   Future checkUser({required ApiRegistrationCheckUserModel user}) async {
     try {
-      await dio.post(
-        '/checkAvailability',
+      final resp = await dio.post(
+        '/registration/credentialsCheck',
         data: user.toJson(),
       );
+      print(resp);
     } catch (error) {
       rethrow;
     }

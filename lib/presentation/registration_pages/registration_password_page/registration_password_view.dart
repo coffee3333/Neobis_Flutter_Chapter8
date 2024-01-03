@@ -4,8 +4,9 @@ import 'package:neobis_flutter_chapter8/core/consts/assets_consts.dart';
 import 'package:neobis_flutter_chapter8/core/consts/text_styles_consts.dart';
 import 'package:neobis_flutter_chapter8/dependencies/common_widgets/common_app_bar_widget.dart';
 import 'package:neobis_flutter_chapter8/dependencies/common_widgets/common_button_widget.dart';
+import 'package:neobis_flutter_chapter8/dependencies/common_widgets/common_dialog_widget.dart';
 import 'package:neobis_flutter_chapter8/dependencies/common_widgets/common_text_field_password_widget.dart';
-import 'package:neobis_flutter_chapter8/presentation/registration_pages/registration_password_page/registration_password_bloc/registration_password_bloc.dart';
+import 'package:neobis_flutter_chapter8/presentation/registration_pages/registration_password_page/cubit/registration_password_cubit.dart';
 
 class RegistrationPasswordView extends StatefulWidget {
   const RegistrationPasswordView({super.key});
@@ -15,37 +16,65 @@ class RegistrationPasswordView extends StatefulWidget {
       _RegistrationPasswordViewState();
 }
 
+class ValuesNotifiedModel {
+  final obscureText = ValueNotifier<bool>(false);
+  final buttonActive = ValueNotifier<bool>(false);
+  final errorState = ValueNotifier<bool>(false);
+
+  void dispose() {
+    obscureText.dispose();
+    buttonActive.dispose();
+    errorState.dispose();
+  }
+}
+
 class _RegistrationPasswordViewState extends State<RegistrationPasswordView> {
-  final FocusNode _focusFirstPassword = FocusNode();
-  final FocusNode _focusSecondPassword = FocusNode();
+  final _valueNotifier = ValuesNotifiedModel();
+  final firstPasswordController = TextEditingController();
+  final secondPasswordController = TextEditingController();
+  final _focusFirstPassword = FocusNode();
+  final _focusSecondPassword = FocusNode();
+
+  @override
+  void dispose() {
+    firstPasswordController.dispose();
+    secondPasswordController.dispose();
+    _focusFirstPassword.dispose();
+    _focusSecondPassword.dispose();
+    _valueNotifier.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _getBody(),
-      appBar: _getAppBar(),
+    return BlocListener<RegistrationPasswordCubit, RegistrationPasswordState>(
+      listener: (context, state) {
+        if (state is RegistrationUserSuccess) {
+          _buildMessage("Вы зарегестрированны", false);
+        } else if (state is RegistrationUserError) {
+          _buildMessage(state.errorText, true);
+        }
+      },
+      child: Scaffold(
+        body: _getBody(),
+        appBar: _getAppBar(),
+      ),
     );
   }
 
-  PreferredSizeWidget _getAppBar() {
+  PreferredSize _getAppBar() {
     return PreferredSize(
       preferredSize: const Size.fromHeight(kToolbarHeight),
-      child: BlocBuilder<RegistrationPasswordBloc, RegistrationPasswordState>(
-        builder: (context, state) {
+      child: ValueListenableBuilder(
+        valueListenable: _valueNotifier.obscureText,
+        builder: (context, obscure, _) {
           return CustomAppBar(
             title: "Регистрация",
             action: true,
-            obscure: state.obscureState,
+            obscure: obscure,
             obscureEvent: () {
-              context.read<RegistrationPasswordBloc>().add(
-                    ObscureFieldsEvent(
-                      buttonActive: state.buttonActive,
-                      stateObscure: !state.obscureState,
-                      errorState: state.errorState,
-                      firstFieldValue: state.firstFieldValue,
-                      secondFieldValue: state.secondFieldValue,
-                    ),
-                  );
+              _valueNotifier.obscureText.value =
+                  !_valueNotifier.obscureText.value;
             },
           );
         },
@@ -71,19 +100,10 @@ class _RegistrationPasswordViewState extends State<RegistrationPasswordView> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.03,
               ),
-              _getFirstPasswordField(),
-              const SizedBox(
-                height: 5,
-              ),
-              _getSecondPasswordField(),
+              _getPasswordForm(),
               const SizedBox(
                 height: 10,
               ),
-              _getErrorMessage(),
-              const SizedBox(
-                height: 10,
-              ),
-              _getNextButton(),
             ],
           ),
         ),
@@ -119,48 +139,74 @@ class _RegistrationPasswordViewState extends State<RegistrationPasswordView> {
     );
   }
 
-  Widget _getFirstPasswordField() {
-    return BlocBuilder<RegistrationPasswordBloc, RegistrationPasswordState>(
-      builder: (context, state) {
+  Widget _getPasswordForm() {
+    return ValueListenableBuilder(
+      valueListenable: _valueNotifier.errorState,
+      builder: (context, errorState, _) {
+        return Column(
+          children: [
+            _getFirstPasswordField(errorState),
+            const SizedBox(
+              height: 10,
+            ),
+            _getSecondPasswordField(errorState),
+            const SizedBox(
+              height: 10,
+            ),
+            _getErrorMessage(errorState),
+            const SizedBox(
+              height: 10,
+            ),
+            _getNextButton(),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _getFirstPasswordField(bool errorState) {
+    return ValueListenableBuilder(
+      valueListenable: _valueNotifier.obscureText,
+      builder: (context, obscureText, _) {
         return CustomPasswordTextField(
-          obscureField: state.obscureState,
+          controller: firstPasswordController,
+          obscureField: !obscureText,
           focusNode: _focusFirstPassword,
-          errorState: state.errorState,
+          errorState: errorState,
           autofocus: true,
           onChanged: (value) {
-            context
-                .read<RegistrationPasswordBloc>()
-                .add(OnChangeFirstFieldEvent(
-                  buttonActive: state.buttonActive,
-                  firstFieldValue: value,
-                  stateObscure: state.obscureState,
-                  errorState: state.errorState,
-                  secondFieldValue: state.secondFieldValue,
-                ));
+            if (value.contains(RegExp(r'[a-zA-Z]')) &&
+                value.contains(RegExp(r'[0-9]'))) {
+              _valueNotifier.buttonActive.value = true;
+              _valueNotifier.errorState.value = false;
+            } else {
+              _valueNotifier.buttonActive.value = false;
+              _valueNotifier.errorState.value = false;
+            }
           },
         );
       },
     );
   }
 
-  Widget _getSecondPasswordField() {
-    return BlocBuilder<RegistrationPasswordBloc, RegistrationPasswordState>(
-      builder: (context, state) {
+  Widget _getSecondPasswordField(bool errorState) {
+    return ValueListenableBuilder(
+      valueListenable: _valueNotifier.obscureText,
+      builder: (context, obscureText, _) {
         return CustomPasswordTextField(
-          obscureField: state.obscureState,
+          controller: secondPasswordController,
+          obscureField: !obscureText,
           focusNode: _focusSecondPassword,
-          errorState: state.errorState,
+          errorState: errorState,
           autofocus: false,
           onChanged: (value) {
-            context.read<RegistrationPasswordBloc>().add(
-                  OnChangeSecondFieldEvent(
-                    buttonActive: state.buttonActive,
-                    secondFieldValue: value,
-                    stateObscure: state.obscureState,
-                    errorState: state.errorState,
-                    firstFieldValue: state.firstFieldValue,
-                  ),
-                );
+            if (firstPasswordController.text == secondPasswordController.text) {
+              _valueNotifier.buttonActive.value = true;
+              _valueNotifier.errorState.value = false;
+            } else {
+              _valueNotifier.buttonActive.value = false;
+              _valueNotifier.errorState.value = true;
+            }
           },
         );
       },
@@ -168,72 +214,68 @@ class _RegistrationPasswordViewState extends State<RegistrationPasswordView> {
   }
 
   Widget _getNextButton() {
-    return BlocConsumer<RegistrationPasswordBloc, RegistrationPasswordState>(
-      builder: (context, state) {
+    return ValueListenableBuilder(
+      valueListenable: _valueNotifier.buttonActive,
+      builder: (context, activeButton, _) {
         return CustomButton(
-          active: state.buttonActive,
+          active: activeButton,
           label: "Далее",
           onPress: () {
-            _onPressButton(state);
+            _onPressEvent();
           },
         );
-      },
-      listener: (context, state) {
-        if (state is OnButtonEvent) {}
       },
     );
   }
 
-  void _onPressButton(RegistrationPasswordState state) {
-    if (_focusFirstPassword.hasFocus) {
-      FocusScope.of(context).requestFocus(_focusSecondPassword);
-      context.read<RegistrationPasswordBloc>().add(
-            OnButtonEvent(
-              buttonActive: state.buttonActive,
-              firstFieldValue: state.firstFieldValue,
-              stateObscure: state.obscureState,
-              errorState: state.errorState,
-              secondFieldValue: state.secondFieldValue,
-            ),
-          );
-    } else if (_focusSecondPassword.hasFocus &&
-        (state.firstFieldValue == state.secondFieldValue)) {
-      final arguments = (ModalRoute.of(context)?.settings.arguments ??
-          <String, dynamic>{}) as Map;
-      context.read<RegistrationPasswordBloc>().add(
-            OnRegisterEvent(
-              buttonActive: state.buttonActive,
-              firstFieldValue: state.firstFieldValue,
-              secondFieldValue: state.secondFieldValue,
-              stateObscure: state.obscureState,
-              errorState: state.errorState,
-              userName: arguments['username'],
-              email: arguments['email'],
-            ),
-          );
-    } else {
-      context.read<RegistrationPasswordBloc>().add(
-            FieldsErrorEvent(
-              buttonActive: state.buttonActive,
-              firstFieldValue: state.firstFieldValue,
-              stateObscure: state.obscureState,
-              errorState: state.errorState,
-              secondFieldValue: state.secondFieldValue,
-            ),
-          );
+  Widget _getErrorMessage(bool errorState) {
+    if (errorState) {
+      return const Text(
+        "Пароли не совпадают",
+        style: TextStylesConsts.lvl16RedStyle,
+      );
     }
+    return const SizedBox();
   }
 
-  Widget _getErrorMessage() {
-    return BlocBuilder<RegistrationPasswordBloc, RegistrationPasswordState>(
-      builder: (context, state) {
-        if (state.errorState) {
-          return const Text(
-            "Пароли не совпадают",
-            style: TextStylesConsts.lvl16RedStyle,
+  void _onPressEvent() {
+    if (_focusFirstPassword.hasFocus) {
+      FocusScope.of(context).requestFocus(_focusSecondPassword);
+      _valueNotifier.buttonActive.value = false;
+      return;
+    } else if (_focusSecondPassword.hasFocus &&
+        (firstPasswordController.text == secondPasswordController.text)) {
+      final arguments = (ModalRoute.of(context)?.settings.arguments ??
+          <String, dynamic>{}) as Map;
+      context.read<RegistrationPasswordCubit>().registerUser(
+            email: arguments['email'],
+            username: arguments['username'],
+            password: firstPasswordController.text,
           );
+      return;
+    }
+    _valueNotifier.buttonActive.value = false;
+    _valueNotifier.errorState.value = true;
+  }
+
+  void _buildMessage(String message, bool errorMessage) {
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return CustomDialogWidget(errorMessage: errorMessage, message: message);
+      },
+    );
+    Future.delayed(
+      const Duration(seconds: 1),
+      () {
+        if (errorMessage) {
+          Navigator.of(context).pop();
+        } else {
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
         }
-        return const SizedBox();
       },
     );
   }

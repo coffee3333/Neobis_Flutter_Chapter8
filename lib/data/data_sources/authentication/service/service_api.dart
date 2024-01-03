@@ -10,7 +10,7 @@ class AuthenticationServiceMobiMarketApi implements AuthenticationDataSource {
   }) async {
     try {
       await getIt.get<Dio>().post(
-            '/authentication',
+            '/registration/log',
             data: user.toJson(),
           );
     } catch (error) {

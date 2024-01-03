@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:neobis_flutter_chapter8/core/consts/text_styles_consts.dart';
 
 class CustomPasswordTextField extends StatelessWidget {
+  final TextEditingController controller;
   final bool obscureField;
   final FocusNode focusNode;
   final bool autofocus;
@@ -10,6 +11,7 @@ class CustomPasswordTextField extends StatelessWidget {
 
   const CustomPasswordTextField({
     super.key,
+    required this.controller,
     required this.obscureField,
     required this.focusNode,
     required this.errorState,
@@ -20,6 +22,7 @@ class CustomPasswordTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       style: errorState
           ? TextStylesConsts.lv3PasswordRedStyle
           : TextStylesConsts.lv3PasswordBlackStyle,

@@ -22,7 +22,7 @@ class AuthenticationBloc
       await authenticationUseCase.call(authenticationModel);
       emit(AuthenticationSuccessState());
     } catch (e) {
-      emit(AuthenticationErrorState(error: true, errorText: "asdasd"));
+      emit(AuthenticationErrorState(errorText: "error"));
     }
   }
 }
