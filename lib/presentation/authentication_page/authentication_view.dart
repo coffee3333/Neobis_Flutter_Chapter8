@@ -45,10 +45,8 @@ class _AuthenticationViewState extends State<AuthenticationView> {
     return BlocListener<AuthenticationBloc, AuthenticationBlocState>(
       listener: (context, state) {
         if (state is AuthenticationSuccessState) {
-          Navigator.pushReplacementNamed(
-            context,
-            RoutesConsts.homePage,
-          );
+          Navigator.pushNamedAndRemoveUntil(
+              context, RoutesConsts.homePage, (route) => false);
         } else if (state is AuthenticationErrorState) {
           _buildErrorMessage();
         }

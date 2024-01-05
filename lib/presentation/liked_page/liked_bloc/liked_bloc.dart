@@ -13,17 +13,40 @@ class LikedBloc extends Bloc<LikedBlocEvent, LikedBlocState> {
     {
       "image": "string",
       "numberOfLikes": 0,
-      "price": 0,
-      "productName": "string",
-      "product_id": 0
-    }
+      "price": 16000,
+      "productName": "BMW M4 Coupe: A Two-Door",
+      "product_id": 1
+    },
+    {
+      "image": "string",
+      "numberOfLikes": 0,
+      "price": 20000,
+      "productName": "BMW M4 Coupe: A Two-Door",
+      "product_id": 2
+    },
+    {
+      "image": "string",
+      "numberOfLikes": 0,
+      "price": 86000,
+      "productName": "BMW M4 Coupe: A Two-Door",
+      "product_id": 3
+    },
+    {
+      "image": "string",
+      "numberOfLikes": 0,
+      "price": 23000,
+      "productName": "BMW M4 Coupe: A Two-Door",
+      "product_id": 4
+    },
   ];
 
   void updateData(UpdateEvent event, Emitter<LikedBlocState> emit) async {
     emit(LikedBlocLoading());
-    Future.delayed(
-      const Duration(seconds: 1),
+    await Future.delayed(
+      const Duration(seconds: 2),
     );
+
     emit(UpdatedState(data: data));
+    // emit(LikedBlocInitial());
   }
 }

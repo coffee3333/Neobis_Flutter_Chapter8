@@ -11,6 +11,20 @@ class TextStylesConsts {
     letterSpacing: 0.0,
   );
 
+  static const TextStyle lvl14GrayStyle = TextStyle(
+    fontFamily: 'Gotham Pro Medium',
+    fontSize: 14.0,
+    color: Colors.black,
+    height: 1.2,
+  );
+
+  static const TextStyle lvl14BlueStyle = TextStyle(
+    fontFamily: 'Gotham Pro Medium',
+    fontSize: 14.0,
+    color: ColorsConsts.lv2BlueColor,
+    height: 1.2,
+  );
+
   static const TextStyle lvl16GrayStyle = TextStyle(
     fontFamily: 'Gotham Pro',
     fontSize: 16.0,
