@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:neobis_flutter_chapter8/core/consts/routes_consts.dart';
 import 'package:neobis_flutter_chapter8/core/consts/text_styles_consts.dart';
 import 'package:neobis_flutter_chapter8/dependencies/common_widgets/common_button_widget.dart';
-import 'package:neobis_flutter_chapter8/dependencies/common_widgets/common_dialog_widget.dart';
+import 'package:neobis_flutter_chapter8/dependencies/common_widgets/common_dialog_notification_widget.dart';
 import 'package:neobis_flutter_chapter8/dependencies/common_widgets/common_logo_widget.dart';
 import 'package:neobis_flutter_chapter8/dependencies/common_widgets/common_text_filed_widget.dart';
 import 'package:neobis_flutter_chapter8/presentation/authentication_page/authentication_bloc/authentication_bloc.dart';
@@ -47,7 +47,7 @@ class _AuthenticationViewState extends State<AuthenticationView> {
         if (state is AuthenticationSuccessState) {
           Navigator.pushReplacementNamed(
             context,
-            RoutesConsts.mainPage,
+            RoutesConsts.homePage,
           );
         } else if (state is AuthenticationErrorState) {
           _buildErrorMessage();
@@ -185,7 +185,7 @@ class _AuthenticationViewState extends State<AuthenticationView> {
       barrierDismissible: true,
       context: context,
       builder: (BuildContext context) {
-        return const CustomDialogWidget(
+        return const CustomDialogNotificationWidget(
           errorMessage: true,
           message: "Неверный логин или пароль",
         );

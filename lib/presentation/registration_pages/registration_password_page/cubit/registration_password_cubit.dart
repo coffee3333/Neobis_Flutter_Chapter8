@@ -21,7 +21,6 @@ class RegistrationPasswordCubit extends Cubit<RegistrationPasswordState> {
       await _registrationUseCase.call(registrationModel);
       emit(RegistrationUserSuccess());
     } catch (e) {
-      print(e);
       emit(RegistrationUserError(errorText: "error"));
     }
   }

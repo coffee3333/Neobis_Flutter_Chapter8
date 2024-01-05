@@ -1,54 +1,80 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:neobis_flutter_chapter8/core/consts/assets_consts.dart';
 import 'package:neobis_flutter_chapter8/core/consts/colors_consts.dart';
 import 'package:neobis_flutter_chapter8/core/consts/text_styles_consts.dart';
 
 class CustomDialogWidget extends StatelessWidget {
-  final bool errorMessage;
-  final String message;
-  const CustomDialogWidget(
-      {super.key, required this.errorMessage, required this.message});
+  final String titleOkButton;
+  final String titleCancelButton;
+  final String content;
+  final Image image;
+  final Function() event;
+
+  const CustomDialogWidget({
+    super.key,
+    required this.titleOkButton,
+    required this.titleCancelButton,
+    required this.content,
+    required this.image,
+    required this.event,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: Dialog(
-            backgroundColor: Colors.transparent,
-            insetPadding: const EdgeInsets.all(10),
-            alignment: Alignment.center,
-            child: Container(
-              width: double.infinity,
-              height: 60,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: errorMessage
-                      ? ColorsConsts.lv1RedColor
-                      : ColorsConsts.lv1GreenColor),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(AssetsConsts.warningIcon),
-                  const SizedBox(
-                    width: 2.5,
-                  ),
-                  Center(
-                    child: Text(
-                      message,
-                      style: TextStylesConsts.lvl16WhiteStyle,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+    return Dialog(
+      child: Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(
+            Radius.circular(32),
           ),
-        )
-      ],
+        ),
+        height: 354,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+          child: Column(
+            children: [
+              image,
+              const SizedBox(
+                height: 24,
+              ),
+              Text(
+                content,
+                textAlign: TextAlign.center,
+                style: TextStylesConsts.dialogContentStyle,
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              GestureDetector(
+                onTap: event,
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 11.5),
+                  padding: const EdgeInsets.only(top: 14.5, bottom: 14.5),
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                      color: ColorsConsts.lv1BlueColor,
+                      borderRadius: BorderRadius.all(Radius.circular(19))),
+                  child: Text(
+                    titleOkButton,
+                    style: TextStylesConsts.lvl16ButtonStyle,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 18.5,
+              ),
+              GestureDetector(
+                onTap: () => Navigator.of(context).pop(),
+                child: Text(
+                  titleCancelButton,
+                  style: TextStylesConsts.lvl16BlacBoldkStyle,
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

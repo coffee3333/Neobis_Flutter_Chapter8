@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:neobis_flutter_chapter8/core/consts/routes_consts.dart';
 import 'package:neobis_flutter_chapter8/dependencies/common_widgets/common_app_bar_widget.dart';
 import 'package:neobis_flutter_chapter8/dependencies/common_widgets/common_button_widget.dart';
-import 'package:neobis_flutter_chapter8/dependencies/common_widgets/common_dialog_widget.dart';
+import 'package:neobis_flutter_chapter8/dependencies/common_widgets/common_dialog_notification_widget.dart';
 import 'package:neobis_flutter_chapter8/dependencies/common_widgets/common_logo_widget.dart';
 import 'package:neobis_flutter_chapter8/dependencies/common_widgets/common_text_filed_widget.dart';
 import 'package:neobis_flutter_chapter8/presentation/registration_pages/registration_login_mail_page/cubit/registration_login_mail_cubit.dart';
@@ -142,7 +142,8 @@ class _RegistrationViewState extends State<RegistrationView> {
       barrierDismissible: true,
       context: context,
       builder: (BuildContext context) {
-        return CustomDialogWidget(errorMessage: true, message: message);
+        return CustomDialogNotificationWidget(
+            errorMessage: true, message: message);
       },
     );
     Future.delayed(

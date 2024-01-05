@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:neobis_flutter_chapter8/core/consts/assets_consts.dart';
+import 'package:neobis_flutter_chapter8/core/consts/routes_consts.dart';
 import 'package:neobis_flutter_chapter8/core/consts/text_styles_consts.dart';
 import 'package:neobis_flutter_chapter8/dependencies/common_widgets/common_app_bar_widget.dart';
 import 'package:neobis_flutter_chapter8/dependencies/common_widgets/common_button_widget.dart';
-import 'package:neobis_flutter_chapter8/dependencies/common_widgets/common_dialog_widget.dart';
+import 'package:neobis_flutter_chapter8/dependencies/common_widgets/common_dialog_notification_widget.dart';
 import 'package:neobis_flutter_chapter8/dependencies/common_widgets/common_text_field_password_widget.dart';
 import 'package:neobis_flutter_chapter8/presentation/registration_pages/registration_password_page/cubit/registration_password_cubit.dart';
 
@@ -263,7 +264,8 @@ class _RegistrationPasswordViewState extends State<RegistrationPasswordView> {
       barrierDismissible: true,
       context: context,
       builder: (BuildContext context) {
-        return CustomDialogWidget(errorMessage: errorMessage, message: message);
+        return CustomDialogNotificationWidget(
+            errorMessage: errorMessage, message: message);
       },
     );
     Future.delayed(
@@ -272,9 +274,8 @@ class _RegistrationPasswordViewState extends State<RegistrationPasswordView> {
         if (errorMessage) {
           Navigator.of(context).pop();
         } else {
-          Navigator.of(context).pop();
-          Navigator.of(context).pop();
-          Navigator.of(context).pop();
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              RoutesConsts.authentication, (route) => false);
         }
       },
     );

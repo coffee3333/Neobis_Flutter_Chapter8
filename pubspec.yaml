@@ -78,7 +78,9 @@ flutter:
     - family: Gotham Pro Medium
       fonts:
           - asset: assets/fonts/Gotham-Pro/gothampro_medium.ttf
-          
+    - family: Gotham Pro Black
+      fonts:
+          - asset: assets/fonts/Gotham-Pro/gothampro_black.ttf  
 
   assets:
     - assets/images/

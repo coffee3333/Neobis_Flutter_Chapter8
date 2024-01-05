@@ -27,6 +27,20 @@ class TextStylesConsts {
     height: 1.2,
   );
 
+  static const TextStyle lvl16BlacBoldkStyle = TextStyle(
+    fontFamily: 'Gotham Pro Bold',
+    fontSize: 16.0,
+    color: ColorsConsts.lv1BlackColor,
+    height: 1.2,
+  );
+
+  static const TextStyle lvl26BlackStyle = TextStyle(
+    fontFamily: 'Gotham Pro Medium',
+    fontSize: 16.0,
+    color: Colors.black,
+    height: 1.2,
+  );
+
   static const TextStyle lvl16WhiteStyle = TextStyle(
     fontFamily: 'Gotham Pro',
     fontSize: 16.0,
@@ -60,6 +74,23 @@ class TextStylesConsts {
     color: Colors.white,
   );
 
+  static const TextStyle lvl18GrayStyle = TextStyle(
+    fontFamily: 'Gotham Pro Bold',
+    fontSize: 18.0,
+    fontWeight: FontWeight.bold,
+    letterSpacing: 0.0,
+    height: 1,
+    color: ColorsConsts.lv1BlackColor,
+  );
+
+  static const TextStyle lvl18Gray2Style = TextStyle(
+    fontFamily: 'Gotham Pro Medium',
+    fontSize: 18.0,
+    letterSpacing: 0.0,
+    height: 1,
+    color: ColorsConsts.lv1BlackColor,
+  );
+
   static const TextStyle headerAppBarStyle = TextStyle(
     fontFamily: 'Gotham Pro Bold',
     fontSize: 18.0,
@@ -67,6 +98,31 @@ class TextStylesConsts {
     letterSpacing: 0.0,
     height: 15.0 / 16.0,
     color: ColorsConsts.lv1BlackColor,
+  );
+
+  static const TextStyle headerAppBarModuleStyle = TextStyle(
+    fontFamily: 'Gotham Pro',
+    fontSize: 18.0,
+    fontWeight: FontWeight.w400,
+    letterSpacing: 0.0,
+    height: 15.0 / 16.0,
+    color: ColorsConsts.lv1BlackColor,
+  );
+
+  static const TextStyle buttonAppBarModuleStyle = TextStyle(
+    fontFamily: 'Gotham Pro Medium',
+    fontSize: 16.0,
+    letterSpacing: 0.0,
+    height: 15.0 / 16.0,
+    color: ColorsConsts.lv1BlackColor,
+  );
+
+  static const TextStyle dialogContentStyle = TextStyle(
+    fontFamily: 'Gotham Pro Bold',
+    fontSize: 18.0,
+    letterSpacing: 0.0,
+    height: 15.0 / 16.0,
+    color: ColorsConsts.lv2BlackColor,
   );
 
   static const TextStyle lv2headerStyle = TextStyle(
@@ -94,5 +150,10 @@ class TextStylesConsts {
     letterSpacing: 10.0,
     height: 15.0 / 16.0,
     color: ColorsConsts.lv1RedColor,
+  );
+
+  static const TextStyle navBarStyle = TextStyle(
+    fontSize: 14.0,
+    height: 1.2,
   );
 }

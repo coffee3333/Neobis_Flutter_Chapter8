@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:neobis_flutter_chapter8/presentation/main_page/bloc/main_bloc.dart';
 import 'package:neobis_flutter_chapter8/presentation/main_page/main_view.dart';
 
 class MainPage extends StatelessWidget {
@@ -8,9 +6,6 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => MainBloc(),
-      child: const MainView(),
-    );
+    return const MainView();
   }
 }
