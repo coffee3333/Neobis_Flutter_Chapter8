@@ -132,10 +132,10 @@ class TextStylesConsts {
   );
 
   static const TextStyle dialogContentStyle = TextStyle(
-    fontFamily: 'Gotham Pro Bold',
+    fontFamily: 'Gotham Pro Medium',
     fontSize: 18.0,
     letterSpacing: 0.0,
-    height: 15.0 / 16.0,
+    height: 1.22,
     color: ColorsConsts.lv2BlackColor,
   );
 

@@ -29,8 +29,8 @@ class CustomItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onDetailEvent(id),
-      onDoubleTap: onLikeEvent(id),
+      onTap: () => onDetailEvent(id),
+      onDoubleTap: () => onLikeEvent(id),
       child: Container(
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
@@ -68,7 +68,7 @@ class CustomItemWidget extends StatelessWidget {
             Row(
               children: [
                 GestureDetector(
-                  onTap: onLikeEvent(id),
+                  onTap: () => onLikeEvent(id),
                   child: GestureDetector(
                     child: SvgPicture.asset(
                       AssetsConsts.likedIcon,

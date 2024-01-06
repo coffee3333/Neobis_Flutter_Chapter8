@@ -6,4 +6,5 @@ class RoutesConsts {
   static const String registrationPassword = '/regestration/password';
   static const String profileLiked = '/profile/liked';
   static const String profileMyItems = '/profile/myItems';
+  static const String profileLikedDetail = '/profile/liked/detail';
 }

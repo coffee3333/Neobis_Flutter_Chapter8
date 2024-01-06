@@ -28,7 +28,7 @@ class CustomDialogWidget extends StatelessWidget {
             Radius.circular(32),
           ),
         ),
-        height: 354,
+        height: 352,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
           child: Column(

@@ -7,6 +7,7 @@ part 'liked_bloc_state.dart';
 class LikedBloc extends Bloc<LikedBlocEvent, LikedBlocState> {
   LikedBloc() : super(LikedBlocInitial()) {
     on<UpdateEvent>(updateData);
+    on<DislikeEvent>(dislikeEvent);
   }
 
   final data = [
@@ -48,5 +49,10 @@ class LikedBloc extends Bloc<LikedBlocEvent, LikedBlocState> {
 
     emit(UpdatedState(data: data));
     // emit(LikedBlocInitial());
+  }
+
+  void dislikeEvent(DislikeEvent event, Emitter<LikedBlocState> emit) async {
+    print(event.id);
+    emit(UpdatedState(data: data));
   }
 }

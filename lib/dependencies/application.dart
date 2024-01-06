@@ -3,6 +3,7 @@ import 'package:neobis_flutter_chapter8/core/consts/colors_consts.dart';
 import 'package:neobis_flutter_chapter8/core/consts/routes_consts.dart';
 import 'package:neobis_flutter_chapter8/presentation/authentication_page/authentication_page.dart';
 import 'package:neobis_flutter_chapter8/presentation/home_page/home_page.dart';
+import 'package:neobis_flutter_chapter8/presentation/liked_detail_page/liked_detail_page.dart';
 import 'package:neobis_flutter_chapter8/presentation/liked_page/liked_page.dart';
 import 'package:neobis_flutter_chapter8/presentation/my_items_page/my_items_page.dart';
 import 'package:neobis_flutter_chapter8/presentation/preview_page/preview_page.dart';
@@ -27,6 +28,7 @@ class Application extends StatelessWidget {
             const RegistrationPasswordPage(),
         RoutesConsts.profileLiked: (context) => const LikedPage(),
         RoutesConsts.profileMyItems: (context) => const MyItemsPage(),
+        RoutesConsts.profileLikedDetail: (context) => const LikedDetailPage(),
       },
       initialRoute: RoutesConsts.authentication,
     );
